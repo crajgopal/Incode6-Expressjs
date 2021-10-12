@@ -8,7 +8,6 @@ const app =express();
 const bcrypt = require('bcrypt');
 
 
-
 //body parser middleware
 // its a middleware that interecepts the raw body and parses into a form that 
 //application code can easily use
