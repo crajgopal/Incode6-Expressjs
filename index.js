@@ -1,3 +1,48 @@
+// Express Project 3b
+const express = require('express');// import express package
+
+const app = new express();  //create instance of express . init app
+const path =require('path');
+//core modeule thats included with nodejs by default, no need to install ..path
+
+
+//load view engine 
+app.set('views',path.join(__dirname, 'views') );
+app.set('view engine', 'pug');
+
+
+app.get('/', (req, res)=>
+{
+    res.render('index', { 
+        title:"Mr.Coffee's schedule management app"
+    });
+
+});
+
+app.get('/users', (req, res)=>
+{
+    res.render('users' , {
+        title:'Display users'
+    });
+});
+
+
+
+//check when deploying  if the server is running other port  if not use port 3000.
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT , ()=> console.log(`Server started on port ${PORT}`));
+
+
+
+
+
+
+
+
+
+/************  Express project 3A***********
+/*****
 const express = require('express');
 //create varialbe and set it to require express.. in ES6: import express from 'express';
 
@@ -19,6 +64,7 @@ app.use(express.urlencoded({ extended :true }));
 
 const users= require('./Data').users;
 const schedules =require('./Data').schedules;
+
 
 
 //🚩 Step 2 : Create the first routes to return all the information
@@ -133,10 +179,10 @@ app.post('/schedules', (req, res) => {
 
 
 
-
 const PORT =process.env.PORT || 3000 ; //check when deploying  if the server is running other port  if nnodeot use port 5000.
 
 app.listen(PORT ,() => console.log(`Server started on port  ${PORT}`));
 //calling call back as second parameter ..and print the port 
 
 
+*************/
