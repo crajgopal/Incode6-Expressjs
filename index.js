@@ -49,7 +49,7 @@ app.get('/users/:id', (req, res)=>{
             user:users[parseInt(req.params.id)]
         })
 
-        console.log(users[parseInt(req.params.id)]);
+       // console.log(users[parseInt(req.params.id)]);
 });
 
 

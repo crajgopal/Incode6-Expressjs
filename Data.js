@@ -44,4 +44,4 @@ module.exports.schedules = [
         'start_at': "8AM",
         'end_at': "6PM"
     }
-]
+] 
