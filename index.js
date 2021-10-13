@@ -5,6 +5,9 @@ const app = new express();  //create instance of express . init app
 const path =require('path');
 //core modeule thats included with nodejs by default, no need to install ..path
 
+const users = require('./Data').users;
+const schedules =require('./Data').schedules;
+
 
 //load view engine 
 app.set('views',path.join(__dirname, 'views') );
@@ -14,17 +17,65 @@ app.set('view engine', 'pug');
 app.get('/', (req, res)=>
 {
     res.render('index', { 
-        title:"Mr.Coffee's schedule management app"
-    });
+        title:"Mr.Coffee's schedule management app",
+        });
 
 });
+
+
 
 app.get('/users', (req, res)=>
 {
     res.render('users' , {
-        title:'Display users'
+        title:'Schedule website',
+        users:users
     });
 });
+
+app.get('/schedules', (req, res)=>
+{
+    res.render('schedules' , {
+        title:'Schedule website',
+        schedules:schedules
+    });
+});
+
+
+app.get('/users/:id', (req, res)=>{
+
+    res.render('userid', {
+            title:'Schedule website',
+            id:req.params.id ,
+            user:users[parseInt(req.params.id)]
+        })
+
+        console.log(users[parseInt(req.params.id)]);
+});
+
+
+app.get('/users/:id/schedules', (req, res)=>{
+
+    let schedules1 =[];
+    for (let  i=0; i<schedules.length;i++)
+    {
+    
+        if(schedules[i]['user_id']==parseInt(req.params.id))
+        {
+            schedules1.push(schedules[i]);
+        
+        }
+    
+    }
+ res.render('userschedules',{
+         
+                    title:'User Schedules',
+                    schedules:schedules1    
+
+       })
+
+    });
+    
+
 
 
 

@@ -1,0 +1,25 @@
+extends layout 
+
+block content
+  h1 #{title}
+   h4 
+   table
+    each schedule in schedules
+     tr
+      td= "user_id:"
+      td= schedule.user_id
+     tr  
+      td= "day:"
+      td= schedule.day
+     tr
+      td= "start_at:"
+      td= schedule.start_at
+     tr
+      td= "end_at:"
+      td= schedule.end_at
+     tr
+       tr
+         td ---------------------------
+         
+     
+     
