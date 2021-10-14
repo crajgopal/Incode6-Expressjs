@@ -97,6 +97,22 @@ app.get('/users/:id/schedules', (req, res)=>{
     
 
 
+    app.post('/users', (req, res )=>{
+
+    
+        const password =req.body.password;
+        const salt =bcrypt.genSaltSync(12);
+        const hash = bcrypt.hashSync(password, salt);
+         req.body.password=hash;
+         console.log(hash);
+          users.push(req.body);
+          console.log(users);
+          res.redirect('/users')
+      
+      
+      });
+
+
 
 
 //check when deploying  if the server is running other port  if not use port 3000.
