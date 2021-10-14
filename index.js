@@ -1,3 +1,119 @@
+// Express Project 3b using ejs
+const express = require('express');// import express package
+
+const app = new express();  //create instance of express . init app
+const path =require('path');
+//core modeule thats included with nodejs by default, no need to install ..path
+const morgan = require('morgan');//HTTP request logger middleware for node.js
+
+
+const users = require('./Data').users;
+const schedules =require('./Data').schedules;
+
+
+//load view engine 
+//app.set('views',path.join(__dirname, 'views') );
+app.set('view engine', 'ejs');
+
+app.use(express.static('public'));
+
+//importing the package/library to help hash paswords. 
+const bcrypt = require('bcrypt');
+
+
+//body parser middleware
+// its a middleware that interecepts the raw body and parses into a form that 
+//application code can easily use
+
+app.use(express.json());// allows to handle raw json.
+app.use(express.urlencoded({ extended :true }));// to get req.body .. middleware
+app.use(morgan('dev'));
+
+app.get('/', (req, res) => {
+
+    res.render('pages/home', 
+
+        {title: "Mr.Coffee's schedule management app"}
+    )
+  })
+  
+  
+app.get('/users/add', (req, res) => {
+    res.render('pages/new-user')
+  })
+
+
+app.get('/users', (req, res)=>
+{
+    res.render('pages/users' , {
+        title:'Schedule website',
+        users:users
+    });
+});
+
+
+app.get('/schedules', (req, res)=>
+{
+    res.render('pages/schedules' , {
+        title:'Schedule website',
+        schedules:schedules
+    });
+});
+
+
+app.get('/users/:id', (req, res)=>{
+
+    res.render('pages/user', {
+            title:'Schedule website',
+            id:req.params.id ,
+            user:users[parseInt(req.params.id)]
+        })
+
+        console.log(users[parseInt(req.params.id)]);
+});
+
+
+app.get('/users/:id/schedules', (req, res)=>{
+
+    let schedules1 =[];
+    for (let  i=0; i<schedules.length;i++)
+    {
+    
+        if(schedules[i]['user_id']==parseInt(req.params.id))
+        {
+            schedules1.push(schedules[i]);
+        
+        }
+    
+    }
+ res.render('pages/userschedules',{
+         
+                    title:'User Schedules',
+                    schedules:schedules1    
+
+       })
+
+    });
+    
+
+
+
+
+//check when deploying  if the server is running other port  if not use port 3000.
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT , ()=> console.log(`Server started on port ${PORT}`));
+
+
+
+
+
+
+
+
+
+/************  Express project 3A***********
+/*****
 const express = require('express');
 //create varialbe and set it to require express.. in ES6: import express from 'express';
 
@@ -19,6 +135,7 @@ app.use(express.urlencoded({ extended :true }));
 
 const users= require('./Data').users;
 const schedules =require('./Data').schedules;
+
 
 
 //🚩 Step 2 : Create the first routes to return all the information
@@ -133,10 +250,10 @@ app.post('/schedules', (req, res) => {
 
 
 
-
 const PORT =process.env.PORT || 3000 ; //check when deploying  if the server is running other port  if nnodeot use port 5000.
 
 app.listen(PORT ,() => console.log(`Server started on port  ${PORT}`));
 //calling call back as second parameter ..and print the port 
 
 
+*************/
