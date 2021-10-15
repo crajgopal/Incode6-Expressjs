@@ -12,10 +12,11 @@ const schedules =require('./Data').schedules;
 
 
 //load view engine 
-//app.set('views',path.join(__dirname, 'views') );
+app.set('views',path.join(__dirname, 'views') );
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname +'/public')));
+
 
 //importing the package/library to help hash paswords. 
 const bcrypt = require('bcrypt');
@@ -63,14 +64,16 @@ app.get('/schedules', (req, res)=>
 
 app.get('/users/:id', (req, res)=>{
 
-    res.render('pages/user', {
-            title:'Schedule website',
-            id:req.params.id ,
-            user:users[parseInt(req.params.id)]
+    
+        res.render('pages/user', {
+            title:'Schedule management website',
+            id:req.params.id,
+           // users: users[parseInt(req.params.id)]
+             users:users   
         })
 
-        console.log(users[parseInt(req.params.id)]);
-});
+
+      });
 
 
 app.get('/users/:id/schedules', (req, res)=>{
@@ -86,9 +89,12 @@ app.get('/users/:id/schedules', (req, res)=>{
         }
     
     }
+    console.log(schedules1);
  res.render('pages/userschedules',{
          
                     title:'User Schedules',
+                    id:req.params.id,
+                    name:users[parseInt(req.params.id)].firstname ,
                     schedules:schedules1    
 
        })
@@ -106,7 +112,7 @@ app.get('/users/:id/schedules', (req, res)=>{
          req.body.password=hash;
          console.log(hash);
           users.push(req.body);
-          console.log(users);
+         console.log(users);
           res.redirect('/users')
       
       
