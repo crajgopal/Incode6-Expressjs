@@ -2,10 +2,7 @@
 
 header{
     width:100%;
-    padding-bottom: 1%;
     margin-bottom:5%;
-
-
     display: inline-flex;
     color:black;
     background-color:rgb(167, 161, 201);
@@ -29,10 +26,10 @@ body {
 }
 
 footer{
-    height:100px;
+    height:50px;
     max-width: 100%;
     padding-bottom:1%;
-    margin-top:15%;
+    margin-top:20%;
     background-color:rgb(167, 161, 201);
     color:black
    
