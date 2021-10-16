@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Schedule Management App</title>
+     <link rel="stylesheet " href ="/styles.css">
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+    <main>
+    <form method="POST" action="/schedules" >
+      <div>
+        <label for="user_id">User_Id: </label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <select name="user_id" required >
+        <option value=""></option>
+
+        <% for (let i = 0; i <length; i++) { %>
+      <option   value= <%= i %>  ><%= i %>- <%=users[i].firstname %> <%=users[i].lastname %> </option>
+      <% } %>
+
+      </select>
+      </div>
+
+      <div>
+        <label for="Day">Day &nbsp;&nbsp;&nbsp;&nbsp;
+          :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select name ="day"  required >
+        <option value=""></option>
+        <% for (let i = 1; i <8; i++) { %>
+        <option value= <%= i %>><%= i %></option>
+        <% } %>
+      </select>
+      </div>
+
+      <div>
+        <label for="starttime"> Start Time       :</label>
+
+        <select name="starttime" required>
+          <option>  </option>
+          <option value="2PM"> 2PM</option>
+          <option value="4PM"> 4PM</option>
+          <option value="6AM"> 6AM </option>
+          <option value="8AM"> 8AM </option>
+          <option value="10AM"> 10AM </option>
+          <option value="12PM"> 12PM </option>
+         </select>
+
+
+         </div>
+
+      <div>
+        <label for="endtime">End Time  :</label>&nbsp;
+        <select name="endtime" required>
+          <option>  </option>
+          <option value="2PM"> 2PM</option>
+          <option value="4PM"> 4PM</option>
+          <option value="6AM"> 6AM </option>
+          <option value="8AM"> 8AM </option>
+          <option value="10AM"> 10AM </option>
+          <option value="12PM"> 12PM </option>
+         </select>
+</div>
+
+      <button type="submit">Add Schedule</button>
+    </form>
+  </main>
+      
+   <%- include('../partials/footer') %>
+</body>
+
+</html> 

@@ -11,15 +11,18 @@ const users = require('./Data').users;
 const schedules =require('./Data').schedules;
 
 
+
+
 //load view engine 
 app.set('views',path.join(__dirname, 'views') );
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname +'/public')));
-
-
 //importing the package/library to help hash paswords. 
 const bcrypt = require('bcrypt');
+
+let alert = require('alert'); 
+
 
 
 //body parser middleware
@@ -32,9 +35,10 @@ app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
 
-    res.render('pages/home', 
-
-        {title: "Mr.Coffee's schedule management app"}
+    res.render('pages/home', {
+         
+    title: "Mr.Coffee's schedule management app"
+    }
     )
   })
   
@@ -43,11 +47,21 @@ app.get('/users/add', (req, res) => {
     res.render('pages/new-user')
   })
 
+  app.get('/schedules/add', (req, res) => {
+    res.render('pages/newschedule',
+    {
+       length: users.length,
+       users :users
+    })
+    
+    
+  })
+
 
 app.get('/users', (req, res)=>
 {
     res.render('pages/users' , {
-        title:'Schedule website',
+        title:'Schedule User website',
         users:users
     });
 });
@@ -103,21 +117,48 @@ app.get('/users/:id/schedules', (req, res)=>{
     
 
 
-    app.post('/users', (req, res )=>{
+    app.post('/users', (req, res)=>{
 
+     if (req.body.password!==req.body.password1){
     
+       alert("Password doesnt match")
+       
+       res.redirect('/users/add')
+
+
+
+     }
+     else
+     {
         const password =req.body.password;
         const salt =bcrypt.genSaltSync(12);
         const hash = bcrypt.hashSync(password, salt);
-         req.body.password=hash;
-         console.log(hash);
-          users.push(req.body);
-         console.log(users);
-          res.redirect('/users')
-      
-      
-      });
+        
+        users.push({
+                    firstname:req.body.firstname,
+                    lastname:req.body.lastname,
+                    email:req.body.email,
+                    password:hash
 
+        })
+         res.redirect('/users')
+      
+      
+      }
+    });
+ app.post('/schedules', (req, res)=>{
+
+   
+  schedules.push( {
+    user_id:req.body.user_id,
+    day:req.body.day,
+    start_at:req.body.starttime,
+    end_at:req.body.endtime
+
+})
+
+    res.redirect('/schedules')
+ })
 
 
 
