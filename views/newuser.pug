@@ -1,0 +1,26 @@
+extends layout 
+
+block content
+ main
+    form(method="POST" action="/users") 
+      div
+        label(for="firstname" ) First Name :&emsp;&emsp;&ensp;
+        input(type="text", name="firstname", required)
+      div
+        label(for="lastname" ) Last Name : &emsp;&emsp;&ensp;
+         input(type="text", name="lastname",  required)
+      div
+        label Email       :&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;
+        input(type="email", name="email",  required)
+      div
+        label(for="password") Password :&emsp;&emsp;&emsp;&nbsp;
+        input(id="password", type="password", name="password", required)
+      div
+        label(for="password") Confirm Password:
+        input(id="password1", type="password" ,name="password1", placeholder='Confirm Password', required)
+      button(type="submit") Add User
+
+
+
+
+

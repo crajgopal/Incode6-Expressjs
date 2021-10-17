@@ -1,0 +1,47 @@
+extends layout  
+
+block content
+    <main>
+     form(method="POST" action="/schedules")
+      div
+       label(for="user_id") User_Id:&emsp;&nbsp;&nbsp;&nbsp;
+
+        select(name="user_id" required)
+         option(value="")
+          -for (let i = 0; i <length; i++) {
+         option(value=i) #{(i + users[i].firstname + users[i].lastname)}
+           -}
+      div
+        label(for="Day") Day &emsp;&emsp;&emsp;&nbsp;
+        select(name ="day" required)
+         option(value="")
+            -for (let i = 1; i <8; i++)
+             -{ 
+         option(value= i )  #{i}
+             -}
+      div
+        label(for="starttime") Start Time       :&nbsp;&nbsp;
+        select(name="starttime" required)
+          option
+          option(value="2PM") 2PM
+          option(value="4PM") 4PM
+          option(value="6AM") 6AM
+          option(value="8AM") 8AM
+          option(value="10AM") 10AM
+          option(value="12PM") 12PM
+        
+      div
+        label(for="endtime") End Time  :&nbsp;&nbsp;&nbsp;
+        select(name="endtime" required)
+           option
+           option(value="2PM") 2PM
+           option(value="4PM") 4PM
+           option(value="6AM") 6AM
+           option(value="8AM") 8AM
+           option(value="10AM") 10AM 
+           option(value="12PM") 12PM
+      
+
+        button(type="submit") Add Schedule
+    
+      

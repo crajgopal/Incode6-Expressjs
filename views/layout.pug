@@ -5,10 +5,24 @@ html(lang="en")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
     title Mr Coffe Website, Express and Pug
-    link(href="/style.css", rel="stylesheet")
+    style
+     include ../views/public/style.css
+    header
+         img(src="../logo_dark.png" width ="40%")
+         nav
+            div
+                a(href ="/users") Users
+                a(href ="/schedules") Schedules
+                a(href ="/users/add") New User
+                a(href ="/schedules/add") Add Schedule
+
+
  body
    block content 
    br
    hr
    footer 
-    p Copyright RajG &copy;2021 
+       div 
+         img(src="../logo_dark.png", width ="40%")
+       div 
+         p(align =center) Copyright RajG &copy;2021
