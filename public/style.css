@@ -10,7 +10,7 @@ header{
 
 }
 header img{
-
+    width :40px;
     padding-right:890px;
 }
 header div a{
@@ -34,6 +34,9 @@ footer{
     background-color:rgb(167, 161, 201);
     color:black
    
+}
+footer img{
+    width:40px;
 }
 
 select{
