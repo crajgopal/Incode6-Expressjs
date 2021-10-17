@@ -14,7 +14,10 @@ const schedules =require('./Data').schedules;
 app.set('views',path.join(__dirname, 'views') );
 app.set('view engine', 'pug');
 
-app.use(express.static(path.join(__dirname +'/public')));
+app.use(express.static('public'))
+
+
+app.use(express.static(path.join(__dirname ,'/public')));
 
 //importing the package/library to help hash paswords. 
 const bcrypt = require('bcrypt');
