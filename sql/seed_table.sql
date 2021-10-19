@@ -1,5 +1,9 @@
 INSERT INTO 
- schedules(username, email)
+ schedules(user_id, day , start_at, end_at)
 VALUES 
-(' raj','c_ra@yahpp.com'),
-('gopal','c_raj@ff.com');
+('0', '1', '2PM' , '10PM'),
+('0', '2', '4PM' , '10PM'),
+('0', '1', '2PM' , '10PM'),
+('1', '1', '2PM' , '10PM'),
+('1', '5', '8AM' , '6PM');
+

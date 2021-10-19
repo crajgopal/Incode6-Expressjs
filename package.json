@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "dev": "nodemon index"
+    "dev": "nodemon index",
+    "create_db":"psql -U postgres -f sql/create_db.sql",
+    "create_table":"psql -U postgres -d project3 -f sql/create_table.sql",
+    "seed_table": "psql -U postgres -d project3 -f sql/seed_table.sql",
+    "test": "echo \"Error: no test specified\" && exit 1"
+
+
   },
   "repository": {
     "type": "git",
@@ -22,6 +28,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "morgan": "^1.10.0",
+    "pg-promise": "^10.11.1",
     "popups": "^1.1.3",
     "pug": "^3.0.2"
   },

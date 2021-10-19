@@ -6,9 +6,9 @@ const path =require('path');
 //core modeule thats included with nodejs by default, no need to install ..path
 const morgan = require('morgan');//HTTP request logger middleware for node.js
 
-
+const db = require('./database');
 const users = require('./Data').users;
-const schedules =require('./Data').schedules;
+//const schedules =require('./Data').schedules;
 
 //load view engine 
 app.set('views',path.join(__dirname, 'views') );
@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname +'/public')));
 const bcrypt = require('bcrypt');
 
 let alert = require('alert'); 
+//const { schedules } = require('./Data');
 
 //body parser middleware
 // its a middleware that interecepts the raw body and parses into a form that 
@@ -42,6 +43,7 @@ app.get('/users/add', (req, res) => {
     res.render('pages/new-user')
   })
 
+  //Display form for adding new schedules 
   app.get('/schedules/add', (req, res) => {
     res.render('pages/newschedule',
     {
@@ -61,14 +63,28 @@ app.get('/users', (req, res)=>
     });
 });
 
+//Get all schedules 
+app.get('/schedules', (req, res)=>{
 
-app.get('/schedules', (req, res)=>
-{
+  db.any('SELECT * FROM schedules;')
+   .then((schedules) => {
+     console.log("In select * "+ schedules);
+ 
     res.render('pages/schedules' , {
         title:'Schedule website',
-        schedules:schedules
+        schedules,
+        message: req.query.message
+
     });
-});
+})
+.catch((error) =>{
+
+  console.log(error)
+  res.redirect("/error?message ="+ error.message)
+})
+
+})
+
 
 
 app.get('/users/:id', (req, res)=>{
@@ -178,21 +194,29 @@ app.get('/users/:id/schedules', (req, res)=>{
       
       }
     });
- app.post('/schedules', (req, res)=>{
 
-   
-  schedules.push( {
-    user_id:req.body.user_id,
-    day:req.body.day,
-    start_at:req.body.starttime,
-    end_at:req.body.endtime
+//create new schedules 
 
-})
+    app.post('/schedules', (req, res)=>{
 
-    res.redirect('/schedules')
- })
+   const {user_id, day, start_at, end_at} =req.body
 
+   //add schedules to db
 
+   db.none('INSERT INTO schedules(user_id, day, start_at, end_at) VALUES($1, $2, $3, $4);',[user_id, day, start_at, end_at])
+
+   .then(() =>{
+
+  res.redirect('/schedules?message=Post+successfully+added') })
+ 
+ .catch((error)=>{
+ 
+console.log(error)
+
+res.redirect("/error?message=" + error.message)
+    })
+  })
+    
 
 //check when deploying  if the server is running other port  if not use port 3000.
 
