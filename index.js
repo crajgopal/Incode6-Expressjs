@@ -7,8 +7,6 @@ const path =require('path');
 const morgan = require('morgan');//HTTP request logger middleware for node.js
 
 const db = require('./database');
-//const users = require('./database').users;
-//const schedules =require('./Data').schedules;
 
 //load view engine 
 app.set('views',path.join(__dirname, 'views') );
@@ -20,8 +18,6 @@ app.use(express.static(path.join(__dirname +'/public')));
 const bcrypt = require('bcrypt');
 
 let alert = require('alert'); 
-const { users } = require('./Data');
-//const { schedules } = require('./Data');
 
 //body parser middleware
 // its a middleware that interecepts the raw body and parses into a form that 
@@ -109,8 +105,7 @@ db.any('SELECT * FROM schedules;')
         message: req.query.message
 
     });
-    console.log(users[0].firstname)
-  })
+ })
 
   .catch((error) =>{
 
@@ -208,7 +203,6 @@ app.get('/users/:id', (req, res)=>{
         
         }
         }
-    console.log(schedules1);
  res.render('pages/userschedules',{
          
                     title:'User Schedules',
