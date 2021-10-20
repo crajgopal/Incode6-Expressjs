@@ -33,6 +33,10 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "create_db":"psql -U postgres -f sql/create_db.sql",
+    "create_table":"psql -U postgres -d project3 -f sql/create_table.sql",
+    "seed_table": "psql -U postgres -d project3 -f sql/seed_table.sql"
+   
   }
 }

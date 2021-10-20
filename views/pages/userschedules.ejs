@@ -14,6 +14,7 @@
         <thead>
           <tr>
             <th>User Id</th>
+            <th>User</th>
             <th>Day</th>
             <th>Start Time</th>
             <th>End Time</th>
@@ -23,12 +24,21 @@
           <% for (let i = 0; i < schedules.length; i++) { %>
             <tr>
               <td><%= schedules[i].user_id %></td>
-              <td><%= schedules[i].day %></td>
+              <td><%= name %></td>
+              <% for (let j = 1; j < days.length+1; j++) { %>
+                <% if((schedules[i].day)==j) {%>
+              <td><%= days[j-1] %></td>
+             
+              <% } %>
+
+              <% } %>
+
               <td><%= schedules[i].start_at %></td>
               <td><%= schedules[i].end_at %></td>
             </tr>
           <% } %>
         </tbody>
+      
       </table>
 
   </main>

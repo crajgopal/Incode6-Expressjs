@@ -7,7 +7,7 @@ const path =require('path');
 const morgan = require('morgan');//HTTP request logger middleware for node.js
 
 const db = require('./database');
-const users = require('./Data').users;
+//const users = require('./database').users;
 //const schedules =require('./Data').schedules;
 
 //load view engine 
@@ -15,10 +15,12 @@ app.set('views',path.join(__dirname, 'views') );
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname +'/public')));
+
 //importing the package/library to help hash paswords. 
 const bcrypt = require('bcrypt');
 
 let alert = require('alert'); 
+const { users } = require('./Data');
 //const { schedules } = require('./Data');
 
 //body parser middleware
@@ -28,6 +30,8 @@ let alert = require('alert');
 app.use(express.json());// allows to handle raw json.
 app.use(express.urlencoded({ extended :true }));// to get req.body .. middleware
 app.use(morgan('dev'));
+
+const days =['Monday','Tuesday','Wednesday','Thursday', 'Friday', 'Saturday' , 'Sunday']
 
 app.get('/', (req, res) => {
 
@@ -45,37 +49,76 @@ app.get('/users/add', (req, res) => {
 
   //Display form for adding new schedules 
   app.get('/schedules/add', (req, res) => {
+    db.any('SELECT * FROM users;' )
+    .then( (users)=>{
+     
+   
     res.render('pages/newschedule',
     {
        length: users.length,
-       users :users
+       users
+    })
+  })
+    .catch((error) =>{
+
+      console.log(error)
+      res.redirect("/error?message ="+ error.message)
     })
     
+  
     
   })
 
-
+//Get all users
 app.get('/users', (req, res)=>
 {
+  db.any('SELECT * FROM users;' )
+  .then( (users)=>{
+
+
     res.render('pages/users' , {
-        title:'Schedule User website',
-        users:users
-    });
+      title:'Schedule User website',
+      users,
+      message: req.query.message
+  });
+  })
+
+  .catch((error) =>{
+
+    console.log(error)
+    res.redirect("/error?message ="+ error.message)
+  })
+  
+
 });
 
 //Get all schedules 
 app.get('/schedules', (req, res)=>{
-
-  db.any('SELECT * FROM schedules;')
+const firstname =[]
+db.any('SELECT * FROM schedules;')
    .then((schedules) => {
-     console.log("In select * "+ schedules);
- 
+
+    db.any('SELECT * FROM users;')
+    .then((users)=>{
+
     res.render('pages/schedules' , {
         title:'Schedule website',
         schedules,
+        days,
+        users,
         message: req.query.message
 
     });
+    console.log(users[0].firstname)
+  })
+
+  .catch((error) =>{
+
+    console.log(error)
+    res.redirect("/error?message ="+ error.message)
+  })
+  
+
 })
 .catch((error) =>{
 
@@ -85,10 +128,11 @@ app.get('/schedules', (req, res)=>{
 
 })
 
-
-
+//Get user at index 
 app.get('/users/:id', (req, res)=>{
 
+  db.any('SELECT * FROM users;' )
+    .then((users)=>{  
     if(isNaN(req.params.id))
     {
         console.log( req.params.id +"  is not a number, enter a number to get right results  ");
@@ -103,22 +147,39 @@ app.get('/users/:id', (req, res)=>{
 
       }
     
-    
-        else {
+          else {
    
     
         res.render('pages/user', {
             title:'Schedule management website',
             id:req.params.id,
-          
-             users:users   
+            users:users   
         })
     }
+  })
+  
+  .catch((error)=>{
+ 
+    console.log(error)
+    
+    res.redirect("/error?message=" + error.message)
+        })
+     
 
-      });
+  
+     
+  
+  });
 
 
-app.get('/users/:id/schedules', (req, res)=>{
+
+      //get user schedules  at index
+
+ app.get('/users/:id/schedules', (req, res)=>{
+
+   db.any('SELECT * FROM users;' )
+  
+      .then((users)=>{  
 
     if(isNaN(req.params.id))
     {
@@ -130,14 +191,13 @@ app.get('/users/:id/schedules', (req, res)=>{
 
         console.log("No element found at this index  , enter number >= 0 &less than "+ users.length );
         res.send("No element found at this index  , enter number  >=0 & less than "+ users.length )
-    
-
-      }
+       }
     
     
         else {
-   
 
+    db.any('SELECT * FROM schedules;')
+  .then((schedules)=>{
     let schedules1 =[];
     for (let  i=0; i<schedules.length;i++)
     {
@@ -147,25 +207,50 @@ app.get('/users/:id/schedules', (req, res)=>{
             schedules1.push(schedules[i]);
         
         }
-    
-    }
+        }
     console.log(schedules1);
  res.render('pages/userschedules',{
          
                     title:'User Schedules',
                     id:req.params.id,
                     name:users[parseInt(req.params.id)].firstname ,
-                    schedules:schedules1    
+                    days,
+                    schedules:schedules1   
 
        })
-
-        }
-
-    });
+      })
+       .catch((error)=>{
+ 
+        console.log(error)
+        
+        res.redirect("/error?message=" + error.message)
+            })
+         
     
+           
+      }//end of else 
+  
+      })
+
+  .catch((error)=>{
+ 
+    console.log(error)
+    
+    res.redirect("/error?message=" + error.message)
+        })
+     
 
 
+
+});
+
+
+
+//Create new user
     app.post('/users', (req, res)=>{
+
+      const {firstname, lastname, email, password,password1} =req.body
+   
 
      if (req.body.password!==req.body.password1){
     
@@ -178,28 +263,33 @@ app.get('/users/:id/schedules', (req, res)=>{
      }
      else
      {
-        const password =req.body.password;
+        //const password =req.body.password;
         const salt =bcrypt.genSaltSync(12);
         const hash = bcrypt.hashSync(password, salt);
-        
-        users.push({
-                    firstname:req.body.firstname,
-                    lastname:req.body.lastname,
-                    email:req.body.email,
-                    password:hash
 
-        })
-         res.redirect('/users')
-      
-      
+        //add users to db
+       db.none('INSERT INTO users(firstname, lastname,email, password) VALUES($1,$2,$3,$4);' ,[firstname,lastname, email, hash])
+       .then((users)=> {
+
+        res.redirect('/users?message=Post+successfully+added')
+
+       })       
+            
+       .catch((error)=>{
+ 
+        console.log(error)
+        
+        res.redirect("/error?message=" + error.message)
+            })
+         
+
       }
     });
 
 //create new schedules 
 
     app.post('/schedules', (req, res)=>{
-
-   const {user_id, day, start_at, end_at} =req.body
+    const {user_id, day, start_at, end_at} =req.body
 
    //add schedules to db
 

@@ -6,3 +6,12 @@ CREATE TABLE IF NOT EXISTS  schedules(
  start_at VARCHAR NOT NULL,
  end_at VARCHAR NOT NUll 
 );
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE IF NOT EXISTS  users(
+ id SERIAL PRIMARY KEY,
+ firstname VARCHAR(60) NOT NULL,
+ lastname VARCHAR(60) NOT NULL,
+ email VARCHAR NOT NULL,
+ password VARCHAR NOT NUll 
+);
