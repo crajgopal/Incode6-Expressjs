@@ -2,15 +2,19 @@ extends layout
 
 block content
   h1 #{title}
-   h4 
+
+   h3
    table
     each schedule in schedules
      tr
       td= "user_id:"
       td= schedule.user_id
+     tr
+      td= "user:"
+      td #{users[(schedule.user_id)].firstname}
      tr  
       td= "day:"
-      td= schedule.day
+      td= days[schedule.day-1]
      tr
       td= "start_at:"
       td= schedule.start_at

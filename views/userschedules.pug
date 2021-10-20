@@ -2,15 +2,20 @@ extends layout
 
 block content
   h1 #{title}
+  
    h4 
    table
     each schedule in schedules
      tr
       td= "user_id:"
       td= schedule.user_id
+     tr
+      td= "User:"
+      td #{name}
+     
      tr  
       td= "day:"
-      td= schedule.day
+      td= days[schedule.day-1]
      tr
       td= "start_at:"
       td= schedule.start_at

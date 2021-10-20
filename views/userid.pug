@@ -2,20 +2,21 @@ extends layout
 
 block content
   h1 #{title}
-    
+  h3  User is #{users[id].firstname }  #{users[id].lastname} 
+
   table
      tr
       td= "firstname:"
-      td= users.firstname
+      td= users[id].firstname
      tr  
       td= "lastname:"
-      td= users.lastname
+      td= users[id].lastname
      tr
       td= "email:"
-      td= users.email
+      td= users[id].email
      tr
       td= "password:"
-      td= users.password
+      td= users[id].password
      tr
        tr
         td
