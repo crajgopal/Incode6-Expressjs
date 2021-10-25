@@ -6,7 +6,7 @@ const path =require('path');
 //core modeule thats included with nodejs by default, no need to install ..path
 const morgan = require('morgan');//HTTP request logger middleware for node.js
 
-const db = require('./database');
+//const db = require('./database');
 const homeRouter =require('./routes/home')
 const usersRouter = require('./routes/users')
 const schedulesRouter = require('./routes/schedules')
