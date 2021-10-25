@@ -7,7 +7,7 @@ const path =require('path');
 const morgan = require('morgan');//HTTP request logger middleware for node.js
 
 const db = require('./database');
-
+const homeRouter =require('./routes/home')
 //load view engine 
 app.set('views',path.join(__dirname, 'views') );
 app.set('view engine', 'ejs');
@@ -29,15 +29,6 @@ app.use(morgan('dev'));
 
 const days =['Monday','Tuesday','Wednesday','Thursday', 'Friday', 'Saturday' , 'Sunday']
 
-app.get('/', (req, res) => {
-
-    res.render('pages/home', {
-         
-    title: "Mr.Coffee's schedule management app"
-    }
-    )
-  })
-  
   
 app.get('/users/add', (req, res) => {
     res.render('pages/new-user')
@@ -91,7 +82,7 @@ app.get('/users', (req, res)=>
 //Get all schedules 
 app.get('/schedules', (req, res)=>{
 const firstname =[]
-db.any("SELECT *, TO_CHAR(start_at,'HH12:MIAM')start_at ,TO_CHAR(end_at,'HH12:MIAM')end_at FROM schedules;")
+db.any("SELECT *, TO_CHAR(start_at,'HH12:MI AM')start_at ,TO_CHAR(end_at,'HH12:MI AM')end_at FROM schedules;")
    .then((schedules) => {
 
     db.any('SELECT * FROM users;')
@@ -192,7 +183,7 @@ app.get('/users/:id', (req, res)=>{
     
         else {
 
-    db.any("SELECT *, TO_CHAR(start_at,'HH12:MIAM')start_at ,TO_CHAR(end_at,'HH12:MIAM')end_at FROM schedules;")
+    db.any("SELECT *, TO_CHAR(start_at,'HH12:MI AM')start_at ,TO_CHAR(end_at,'HH12:MI AM')end_at FROM schedules;")
   .then((schedules)=>{
     let schedules1 =[];
     for (let  i=0; i<schedules.length;i++)
@@ -287,7 +278,7 @@ app.get('/users/:id', (req, res)=>{
     const {user_id, day, start_at, end_at} =req.body
 
 
-    
+
    //add schedules to db
 
    db.none('INSERT INTO schedules(user_id, day, start_at, end_at) VALUES($1, $2, $3, $4);',[user_id, day, start_at,end_at])
