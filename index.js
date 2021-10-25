@@ -91,7 +91,7 @@ app.get('/users', (req, res)=>
 //Get all schedules 
 app.get('/schedules', (req, res)=>{
 const firstname =[]
-db.any('SELECT * FROM schedules;')
+db.any("SELECT *, TO_CHAR(start_at,'HH12:MIAM')start_at ,TO_CHAR(end_at,'HH12:MIAM')end_at FROM schedules;")
    .then((schedules) => {
 
     db.any('SELECT * FROM users;')
@@ -126,7 +126,7 @@ db.any('SELECT * FROM schedules;')
 //Get user at index 
 app.get('/users/:id', (req, res)=>{
 
-  db.any('SELECT * FROM users;' )
+  db.any('SELECT * FROM users;')
     .then((users)=>{  
     if(isNaN(req.params.id))
     {
@@ -148,9 +148,10 @@ app.get('/users/:id', (req, res)=>{
         res.render('pages/user', {
             title:'Schedule management website',
             id:req.params.id,
-            users:users   
+            users:users,
         })
-    }
+    console.log(users)
+      }
   })
   
   .catch((error)=>{
@@ -191,7 +192,7 @@ app.get('/users/:id', (req, res)=>{
     
         else {
 
-    db.any('SELECT * FROM schedules;')
+    db.any("SELECT *, TO_CHAR(start_at,'HH12:MIAM')start_at ,TO_CHAR(end_at,'HH12:MIAM')end_at FROM schedules;")
   .then((schedules)=>{
     let schedules1 =[];
     for (let  i=0; i<schedules.length;i++)
@@ -285,9 +286,11 @@ app.get('/users/:id', (req, res)=>{
     app.post('/schedules', (req, res)=>{
     const {user_id, day, start_at, end_at} =req.body
 
+
+    
    //add schedules to db
 
-   db.none('INSERT INTO schedules(user_id, day, start_at, end_at) VALUES($1, $2, $3, $4);',[user_id, day, start_at, end_at])
+   db.none('INSERT INTO schedules(user_id, day, start_at, end_at) VALUES($1, $2, $3, $4);',[user_id, day, start_at,end_at])
 
    .then(() =>{
 

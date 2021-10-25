@@ -1,11 +1,11 @@
 INSERT INTO 
  schedules(user_id, day , start_at, end_at)
 VALUES 
-('0', '1', '2PM' , '10PM'),
-('0', '2', '4PM' , '10PM'),
-('0', '1', '2PM' , '10PM'),
-('1', '1', '2PM' , '10PM'),
-('1', '5', '8AM' , '6PM');
+('0', '1', '2:00' , '20:00'),
+('0', '2', '4:00' , '18:00'),
+('0', '1', '2:00' , '16:00'),
+('1', '1', '2:00' , '14:00'),
+('1', '5', '8:00' , '16:00');
 
 INSERT INTO 
  users(firstname, lastname ,email, password)

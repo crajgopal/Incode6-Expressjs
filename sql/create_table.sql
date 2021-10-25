@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS  schedules(
  id SERIAL PRIMARY KEY,
  user_id INTEGER NOT NULL,
  day INTEGER NOT NULL,
- start_at VARCHAR NOT NULL,
- end_at VARCHAR NOT NUll 
+ start_at TIME NOT NULL,
+ end_at TIME NOT NUll 
 );
 
 DROP TABLE IF EXISTS users;
